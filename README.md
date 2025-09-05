@@ -1,6 +1,6 @@
 # 📋 Mini-Trello Kanban Board
 
-> **Proyecto de prueba técnica**: Sistema de gestión de tareas estilo Trello con Laravel + Livewire
+> **Proyecto**: Sistema de gestión de tareas estilo Trello con Laravel + Livewire
 
 [![Laravel](https://img.shields.io/badge/Laravel-9.x-red.svg)](https://laravel.com)
 [![Livewire](https://img.shields.io/badge/Livewire-2.x-purple.svg)](https://laravel-livewire.com)
@@ -282,7 +282,7 @@ php artisan test --filter=KanbanBoardTest
 
 ## 📄 Licencia
 
-Este proyecto es una prueba técnica y está disponible bajo la licencia MIT.
+Este proyecto está disponible bajo la licencia MIT.
 
 ## � Dependencias Frontend
 
@@ -311,7 +311,7 @@ npm run preview  # Preview del build
 
 ## �👨‍💻 Desarrollo
 
-Desarrollado como prueba técnica para demostrar habilidades en:
+Desarrollado para demostrar habilidades en:
 - Laravel + Livewire
 - TailwindCSS
 - SQLite

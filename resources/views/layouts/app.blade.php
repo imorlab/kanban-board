@@ -13,6 +13,9 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+        <!-- Livewire Styles -->
+        @livewireStyles
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100">
@@ -32,5 +35,11 @@
                 {{ $slot }}
             </main>
         </div>
+
+        <!-- Livewire Scripts -->
+        @livewireScripts
+        
+        <!-- Custom Scripts -->
+        @stack('scripts')
     </body>
 </html>

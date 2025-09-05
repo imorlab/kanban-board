@@ -1,12 +1,10 @@
-# 📋 Mini-Trello Kanban Board
+# 📋 Kanban Board
 
 > **Proyecto**: Sistema de gestión de tareas estilo Trello con Laravel + Livewire
 
 [![Laravel](https://img.shields.io/badge/Laravel-9.x-red.svg)](https://laravel.com)
 [![Livewire](https://img.shields.io/badge/Livewire-2.x-purple.svg)](https://laravel-livewire.com)
 [![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.x-blue.svg)](https://tailwindcss.com)
-[![SweetAlert2](https://img.shields.io/badge/SweetAlert2-11.x-orange.svg)](https://sweetalert2.github.io)
-[![Spatie ActivityLog](https://img.shields.io/badge/Spatie-ActivityLog-green.svg)](https://spatie.be/docs/laravel-activitylog)
 [![SQLite](https://img.shields.io/badge/Database-SQLite-blue.svg)](https://sqlite.org)
 
 ## 🚀 Características

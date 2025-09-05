@@ -1,7 +1,7 @@
 <div class="p-6">
     <!-- Header -->
     <div class="flex justify-between items-center mb-6">
-        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Mi Tablero Kanban</h1>
+        <h1 class="text-2xl font-bold text-gray-900">Mi Tablero Kanban</h1>
         <button
             wire:click="toggleCreateForm"
             class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors"
@@ -14,7 +14,7 @@
     </div>
 
     <!-- Create Task Form Sidebar -->
-    <div class="min-h-screen bg-gray-100 dark:bg-gray-900"
+    <div class="min-h-screen bg-gray-200"
      x-data="{
          showCreateForm: @entangle('showCreateForm'),
          disableInteractions() {
@@ -170,6 +170,48 @@
         if (kanbanBoard) {
             kanbanBoard.style.pointerEvents = 'auto';
         }
+    }
+
+    // SweetAlert2 event listeners
+    window.addEventListener('swal:success', event => {
+        const config = {
+            icon: 'success',
+            ...event.detail
+        };
+
+        if (config.toast) {
+            Swal.fire({
+                toast: true,
+                position: config.position || 'top-end',
+                showConfirmButton: false,
+                timer: config.timer || 3000,
+                timerProgressBar: true,
+                icon: config.icon || 'success',
+                title: config.title,
+                text: config.text
+            });
+        } else {
+            Swal.fire(config);
+        }
+    });
+
+    // Confirmation for delete task
+    function confirmDelete(taskId) {
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: 'Esta acción no se puede deshacer',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#dc2626',
+            cancelButtonColor: '#6b7280',
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                @this.call('deleteTask', taskId);
+            }
+        });
     }
 </script>
 @endpush

@@ -52,20 +52,15 @@ class TaskCard extends Component
         $this->showEditForm = false;
         $this->emit('taskUpdated');
 
-        session()->flash('message', 'Tarea actualizada correctamente.');
-    }
-
-    public function deleteTask()
-    {
-        // Check if user owns the task
-        if ($this->task->user_id !== auth()->id()) {
-            return;
-        }
-
-        $this->task->delete();
-        $this->emit('taskUpdated');
-
-        session()->flash('message', 'Tarea eliminada correctamente.');
+        // Emit SweetAlert notification
+        $this->dispatchBrowserEvent('swal:success', [
+            'title' => '¡Actualizada!',
+            'text' => 'La tarea se ha actualizado correctamente.',
+            'timer' => 2000,
+            'toast' => true,
+            'position' => 'top-end',
+            'showConfirmButton' => false
+        ]);
     }
 
     public function render()

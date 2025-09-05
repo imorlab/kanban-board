@@ -27,8 +27,7 @@
                     </button>
 
                     <button
-                        wire:click="deleteTask"
-                        wire:confirm="¿Estás seguro de que quieres eliminar esta tarea?"
+                        onclick="confirmDelete({{ $task->id }})"
                         class="p-1 text-gray-400 hover:text-red-500 transition-colors"
                         title="Eliminar"
                     >

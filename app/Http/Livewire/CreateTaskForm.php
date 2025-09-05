@@ -60,7 +60,8 @@ class CreateTaskForm extends Component
         // Emit event to refresh parent component and close sidebar
         $this->emit('taskCreated');
 
-        session()->flash('message', '¡Tarea creada correctamente!');
+        // Remove flash message since we'll use SweetAlert2
+        // session()->flash('message', '¡Tarea creada correctamente!');
     }
 
     public function render()

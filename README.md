@@ -5,15 +5,18 @@
 [![Laravel](https://img.shields.io/badge/Laravel-9.x-red.svg)](https://laravel.com)
 [![Livewire](https://img.shields.io/badge/Livewire-2.x-purple.svg)](https://laravel-livewire.com)
 [![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.x-blue.svg)](https://tailwindcss.com)
+[![SweetAlert2](https://img.shields.io/badge/SweetAlert2-11.x-orange.svg)](https://sweetalert2.github.io)
 [![SQLite](https://img.shields.io/badge/Database-SQLite-green.svg)](https://sqlite.org)
 
 ## 🚀 Características
 
-- ✅ **Tablero Kanban Interactivo** con drag & drop
+- ✅ **Tablero Kanban Interactivo** con drag & drop (SortableJS)
 - ✅ **Autenticación Completa** (registro, login, perfil)
 - ✅ **Gestión de Tareas CRUD** (crear, leer, actualizar, eliminar)
 - ✅ **Estados de Tareas**: Pendiente → En Progreso → Completado
-- ✅ **Interfaz Responsiva** con TailwindCSS
+- ✅ **Notificaciones Interactivas** con SweetAlert2
+- ✅ **Sistema de Traducciones** (Inglés/Español)
+- ✅ **Interfaz Responsiva** con TailwindCSS + Alpine.js
 - ✅ **Tiempo Real** con Livewire 2
 - ✅ **Base de Datos SQLite** (fácil configuración)
 - ✅ **Configuración Dual** (Local + Docker)
@@ -44,10 +47,12 @@
 ## 🛠️ Tecnologías Utilizadas
 
 - **Backend**: Laravel 9.x + PHP 8.3
-- **Frontend**: Livewire 2.x + TailwindCSS + Alpine.js
+- **Frontend**: Livewire 2.x + TailwindCSS + Alpine.js + SweetAlert2
 - **Base de Datos**: SQLite
 - **Autenticación**: Laravel Breeze
 - **Drag & Drop**: SortableJS
+- **Notificaciones**: SweetAlert2 (integrada via NPM)
+- **Traducciones**: Laravel i18n (inglés incluido)
 - **Containerización**: Docker + Docker Compose
 
 ## ⚡ Inicio Rápido
@@ -109,12 +114,18 @@ make prod-logs   # Ver logs
 - Registrar nuevo usuario o usar demo: `demo@kanban.com` / `password`
 
 ### 2. **Gestión de Tareas**
-- **Crear**: Botón "Nueva Tarea" en el tablero
-- **Editar**: Click en icono de editar en la tarjeta
-- **Mover**: Drag & drop entre columnas
-- **Eliminar**: Click en icono de eliminar (con confirmación)
+- **Crear**: Botón "Nueva Tarea" en el tablero → Formulario sidebar
+- **Editar**: Click en icono de editar en la tarjeta → Edición inline
+- **Mover**: Drag & drop entre columnas → Notificación automática
+- **Eliminar**: Click en icono de eliminar → Confirmación SweetAlert2
 
-### 3. **Estados de Tareas**
+### 3. **Notificaciones Interactivas**
+- 🎉 **Creación de tareas**: Modal de confirmación
+- 📝 **Actualización**: Toast discreto en esquina superior
+- 🚀 **Movimiento**: Toast con estado destino
+- 🗑️ **Eliminación**: Confirmación + notificación de éxito
+
+### 4. **Estados de Tareas**
 - 🔘 **Pendiente**: Tareas por hacer
 - 🔵 **En Progreso**: Tareas en desarrollo  
 - 🟢 **Completado**: Tareas finalizadas
@@ -169,6 +180,26 @@ make test           # Ejecutar tests
   (gray)        (blue)        (green)
 ```
 
+## 🎨 Características UX/UI
+
+### Notificaciones SweetAlert2
+- **Toast Notifications**: Feedback discreto en esquina superior derecha
+- **Confirmaciones Modales**: Diálogos elegantes para acciones destructivas
+- **Animaciones Suaves**: Transiciones fluidas entre estados
+- **Responsive**: Adaptadas a dispositivos móviles y desktop
+
+### Sistema de Traducciones
+- **Archivo de traducciones**: `lang/en/front.php`
+- **Textos centralizados**: Todos los strings del frontend organizados
+- **Fácil localización**: Base preparada para múltiples idiomas
+- **Consistencia**: Terminología unificada en toda la aplicación
+
+### Interacciones Avanzadas
+- **Drag & Drop**: SortableJS con animaciones suaves
+- **Feedback Visual**: Estados hover, focus y loading
+- **Formularios Reactivos**: Validación en tiempo real con Livewire
+- **Sidebar Deslizante**: Formulario de creación con overlay y animaciones
+
 ## 🧪 Testing
 
 ```bash
@@ -192,6 +223,10 @@ php artisan test --filter=KanbanBoardTest
 
 ### ✅ Características Adicionales
 - [x] Interfaz responsiva y moderna
+- [x] Notificaciones SweetAlert2 para todas las operaciones CRUD
+- [x] Sistema de traducciones (archivo `lang/en/front.php`)
+- [x] Confirmaciones de eliminación interactivas
+- [x] Toast notifications para feedback inmediato
 - [x] Validaciones frontend y backend
 - [x] Factory y seeders para datos de prueba
 - [x] Configuración Docker para producción
@@ -201,17 +236,44 @@ php artisan test --filter=KanbanBoardTest
 ## 🚀 Próximas Mejoras
 
 - [ ] Sistema de auditoría para administradores
-- [ ] Notificaciones toast
-- [ ] Tests unitarios y de feature
+- [ ] Tests unitarios y de feature completos
 - [ ] API REST para integraciones
 - [ ] Websockets para colaboración en tiempo real
 - [ ] Filtros y búsqueda avanzada
+- [ ] Sistema de etiquetas/categorías
+- [ ] Fechas de vencimiento
+- [ ] Múltiples tableros por usuario
 
 ## 📄 Licencia
 
 Este proyecto es una prueba técnica y está disponible bajo la licencia MIT.
 
-## 👨‍💻 Desarrollo
+## � Dependencias Frontend
+
+### Principales
+```json
+{
+  "dependencies": {
+    "alpinejs": "^3.x",
+    "sweetalert2": "^11.x",
+    "sortablejs": "^1.15.x"
+  },
+  "devDependencies": {
+    "@tailwindcss/forms": "^0.5.x",
+    "tailwindcss": "^3.x",
+    "vite": "^4.x"
+  }
+}
+```
+
+### Scripts Disponibles
+```bash
+npm run dev      # Desarrollo con watch
+npm run build    # Compilación optimizada
+npm run preview  # Preview del build
+```
+
+## �👨‍💻 Desarrollo
 
 Desarrollado como prueba técnica para demostrar habilidades en:
 - Laravel + Livewire

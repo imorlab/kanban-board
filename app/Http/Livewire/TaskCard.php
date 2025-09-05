@@ -54,8 +54,8 @@ class TaskCard extends Component
 
         // Emit SweetAlert notification
         $this->dispatchBrowserEvent('swal:success', [
-            'title' => '¡Actualizada!',
-            'text' => 'La tarea se ha actualizado correctamente.',
+            'title' => __('front.task_updated_title'),
+            'text' => __('front.task_updated_text'),
             'timer' => 2000,
             'toast' => true,
             'position' => 'top-end',

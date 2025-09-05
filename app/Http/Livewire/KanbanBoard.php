@@ -34,8 +34,8 @@ class KanbanBoard extends Component
 
         // Emit SweetAlert notification
         $this->dispatchBrowserEvent('swal:success', [
-            'title' => '¡Tarea creada!',
-            'text' => 'La tarea se ha creado correctamente.',
+            'title' => __('front.task_created_title'),
+            'text' => __('front.task_created_text'),
             'timer' => 3000
         ]);
     }
@@ -60,14 +60,14 @@ class KanbanBoard extends Component
 
         // Show notification about status change
         $statusNames = [
-            'pending' => 'Pendiente',
-            'in_progress' => 'En Progreso',
-            'completed' => 'Completado'
+            'pending' => __('front.status_pending'),
+            'in_progress' => __('front.status_in_progress'),
+            'completed' => __('front.status_completed')
         ];
 
         $this->dispatchBrowserEvent('swal:success', [
-            'title' => '¡Tarea movida!',
-            'text' => "La tarea se movió a {$statusNames[$newStatus]}",
+            'title' => __('front.task_moved_title'),
+            'text' => __('front.task_moved_text', ['status' => $statusNames[$newStatus]]),
             'timer' => 2000,
             'showConfirmButton' => false,
             'toast' => true,
@@ -94,8 +94,8 @@ class KanbanBoard extends Component
 
         // Emit SweetAlert notification
         $this->dispatchBrowserEvent('swal:success', [
-            'title' => '¡Eliminada!',
-            'text' => 'La tarea se ha eliminado correctamente.',
+            'title' => __('front.task_deleted_title'),
+            'text' => __('front.task_deleted_text'),
             'timer' => 2000,
             'toast' => true,
             'position' => 'top-end',

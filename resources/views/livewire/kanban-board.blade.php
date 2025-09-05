@@ -1,7 +1,7 @@
 <div class="p-6">
     <!-- Header -->
     <div class="flex justify-between items-center mb-6">
-        <h1 class="text-2xl font-bold text-gray-900">Mi Tablero Kanban</h1>
+        <h1 class="text-2xl font-bold text-gray-900">{{ __('front.kanban_title') }}</h1>
         <button
             wire:click="toggleCreateForm"
             class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors"
@@ -9,7 +9,7 @@
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
             </svg>
-            Nueva Tarea
+            {{ __('front.new_task') }}
         </button>
     </div>
 
@@ -55,12 +55,12 @@
                     <!-- Header -->
                     <div class="bg-blue-600 px-4 py-6 sm:px-6">
                         <div class="flex items-center justify-between">
-                            <h2 class="text-lg font-medium text-white">Nueva Tarea</h2>
+                            <h2 class="text-lg font-medium text-white">{{ __('front.new_task_title') }}</h2>
                             <div class="ml-3 flex h-7 items-center">
                                 <button type="button"
                                         @click="$wire.set('showCreateForm', false)"
                                         class="rounded-md bg-blue-600 text-blue-200 hover:text-white focus:outline-none focus:ring-2 focus:ring-white">
-                                    <span class="sr-only">Cerrar panel</span>
+                                    <span class="sr-only">{{ __('front.close_panel') }}</span>
                                     <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                                     </svg>
@@ -68,7 +68,7 @@
                             </div>
                         </div>
                         <div class="mt-1">
-                            <p class="text-sm text-blue-300">Crea una nueva tarea para tu tablero Kanban</p>
+                            <p class="text-sm text-blue-300">{{ __('front.new_task_description') }}</p>
                         </div>
                     </div>
 
@@ -90,7 +90,7 @@
             <div class="flex items-center justify-between mb-4">
                 <h2 class="font-semibold text-gray-700 flex items-center gap-2">
                     <div class="w-3 h-3 bg-gray-400 rounded-full"></div>
-                    Pendiente
+                    {{ __('front.pending') }}
                     <span class="bg-gray-200 text-gray-600 px-2 py-1 rounded-full text-sm">{{ count($tasks['pending']) }}</span>
                 </h2>
             </div>
@@ -106,7 +106,7 @@
             <div class="flex items-center justify-between mb-4">
                 <h2 class="font-semibold text-blue-700 flex items-center gap-2">
                     <div class="w-3 h-3 bg-blue-500 rounded-full"></div>
-                    En Progreso
+                    {{ __('front.in_progress') }}
                     <span class="bg-blue-200 text-blue-600 px-2 py-1 rounded-full text-sm">{{ count($tasks['in_progress']) }}</span>
                 </h2>
             </div>
@@ -122,7 +122,7 @@
             <div class="flex items-center justify-between mb-4">
                 <h2 class="font-semibold text-green-700 flex items-center gap-2">
                     <div class="w-3 h-3 bg-green-500 rounded-full"></div>
-                    Completado
+                    {{ __('front.completed') }}
                     <span class="bg-green-200 text-green-600 px-2 py-1 rounded-full text-sm">{{ count($tasks['completed']) }}</span>
                 </h2>
             </div>
@@ -198,14 +198,14 @@
     // Confirmation for delete task
     function confirmDelete(taskId) {
         Swal.fire({
-            title: '¿Estás seguro?',
-            text: 'Esta acción no se puede deshacer',
+            title: '{{ __("front.confirm_delete_title") }}',
+            text: '{{ __("front.confirm_delete_text") }}',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#dc2626',
             cancelButtonColor: '#6b7280',
-            confirmButtonText: 'Sí, eliminar',
-            cancelButtonText: 'Cancelar',
+            confirmButtonText: '{{ __("front.confirm_delete_button") }}',
+            cancelButtonText: '{{ __("front.cancel_button") }}',
             reverseButtons: true
         }).then((result) => {
             if (result.isConfirmed) {

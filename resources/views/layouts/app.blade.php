@@ -18,7 +18,7 @@
         @livewireStyles
     </head>
     <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-200">
+        <div class="min-h-screen bg-gradient-to-r from-purple-100 to-purple-300">
             @include('layouts.navigation')
 
             <!-- Page Heading -->

@@ -14,6 +14,7 @@ class KanbanBoard extends Component
         'taskCreated' => 'handleTaskCreated',
         'taskUpdated' => 'refreshTasks',
         'taskMoved' => 'handleTaskMoved',
+        'closeCreateForm' => 'handleCloseForm',
     ];
 
     public function mount()
@@ -38,6 +39,11 @@ class KanbanBoard extends Component
             'text' => __('front.task_created_text'),
             'timer' => 3000
         ]);
+    }
+
+    public function handleCloseForm()
+    {
+        $this->showCreateForm = false; // Close the sidebar without success message
     }
 
     public function handleTaskMoved($taskId, $newStatus, $newOrder)

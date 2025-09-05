@@ -2,7 +2,7 @@
 
 return [
     // Navigation & General
-    'dashboard' => 'Dashboard',
+    'dashboard' => 'Kanban',
 
     // Kanban Board
     'kanban_title' => 'My Kanban Board',

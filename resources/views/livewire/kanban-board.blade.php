@@ -4,7 +4,7 @@
         <h1 class="text-2xl font-bold text-gray-900">{{ __('front.kanban_title') }}</h1>
         <button
             wire:click="toggleCreateForm"
-            class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors"
+            class="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors"
         >
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
@@ -14,7 +14,7 @@
     </div>
 
     <!-- Create Task Form Sidebar -->
-    <div class="min-h-screen bg-gray-200"
+    <div class="min-h-screen"
      x-data="{
          showCreateForm: @entangle('showCreateForm'),
          disableInteractions() {
@@ -53,13 +53,13 @@
 
                 <div class="flex h-full flex-col bg-white shadow-xl relative z-[110]">
                     <!-- Header -->
-                    <div class="bg-blue-600 px-4 py-6 sm:px-6">
+                    <div class="bg-purple-600 px-4 py-6 sm:px-6">
                         <div class="flex items-center justify-between">
                             <h2 class="text-lg font-medium text-white">{{ __('front.new_task_title') }}</h2>
                             <div class="ml-3 flex h-7 items-center">
                                 <button type="button"
                                         @click="$wire.set('showCreateForm', false)"
-                                        class="rounded-md bg-blue-600 text-blue-200 hover:text-white focus:outline-none focus:ring-2 focus:ring-white">
+                                        class="rounded-md bg-purple-600 text-purple-200 hover:text-white focus:outline-none focus:ring-2 focus:ring-white">
                                     <span class="sr-only">{{ __('front.close_panel') }}</span>
                                     <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -68,7 +68,7 @@
                             </div>
                         </div>
                         <div class="mt-1">
-                            <p class="text-sm text-blue-300">{{ __('front.new_task_description') }}</p>
+                            <p class="text-sm text-purple-300">{{ __('front.new_task_description') }}</p>
                         </div>
                     </div>
 

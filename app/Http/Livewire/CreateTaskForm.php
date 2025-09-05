@@ -31,7 +31,7 @@ class CreateTaskForm extends Component
     {
         $this->reset(['title', 'description']);
         $this->status = TaskStatus::PENDING->value;
-        $this->emit('taskCreated'); // This will close the sidebar
+        $this->emit('closeCreateForm'); // Different event for closing without success message
     }
 
     public function createTask()

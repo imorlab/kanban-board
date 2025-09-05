@@ -18,7 +18,7 @@
                 <div class="flex gap-1">
                     <button
                         wire:click="toggleEdit"
-                        class="p-1 text-gray-400 hover:text-blue-500 transition-colors"
+                        class="p-1 text-gray-400 hover:text-purple-500 transition-colors"
                         title="{{ __('front.edit') }}"
                     >
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -45,7 +45,7 @@
                 <input
                     wire:model="title"
                     type="text"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                     placeholder="{{ __('front.title_placeholder') }}"
                     required
                 >
@@ -57,7 +57,7 @@
             <div>
                 <textarea
                     wire:model="description"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
                     rows="3"
                     placeholder="{{ __('front.description_optional') }}"
                 ></textarea>
@@ -69,7 +69,7 @@
             <div class="flex gap-2 pt-2">
                 <button
                     type="submit"
-                    class="px-3 py-1 bg-blue-500 text-white text-sm rounded hover:bg-blue-600 transition-colors"
+                    class="px-3 py-1 bg-purple-500 text-white text-sm rounded hover:bg-purple-600 transition-colors"
                 >
                     {{ __('front.save') }}
                 </button>

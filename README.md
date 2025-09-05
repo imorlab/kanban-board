@@ -1,107 +1,358 @@
-# Prueba Técnica para Desarrollador Laravel & Livewire en jtsec
+# 📋 Mini-Trello Kanban Board
 
-¡Hola! Te damos la bienvenida y agradecemos tu interés en formar parte de nuestro equipo.
+> **Proyecto de prueba técnica**: Sistema de gestión de tareas estilo Trello con Laravel + Livewire
 
-Esta prueba técnica ha sido diseñada para evaluar tus habilidades y conocimientos en el desarrollo de aplicaciones web modernas con Laravel y Livewire. El objetivo es que puedas demostrarnos tu forma de trabajar, tu atención al detalle y tu capacidad para crear soluciones funcionales y de alta calidad.
+[![Laravel](https://img.shields.io/badge/Laravel-9.x-red.svg)](https://laravel.com)
+[![Livewire](https://img.shields.io/badge/Livewire-2.x-purple.svg)](https://laravel-livewire.com)
+[![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.x-blue.svg)](https://tailwindcss.com)
+[![SQLite](https://img.shields.io/badge/Database-SQLite-green.svg)](https://sqlite.org)
+
+## 🚀 Características
+
+- ✅ **Tablero Kanban Interactivo** con drag & drop
+- ✅ **Autenticación Completa** (registro, login, perfil)
+- ✅ **Gestión de Tareas CRUD** (crear, leer, actualizar, eliminar)
+- ✅ **Estados de Tareas**: Pendiente → En Progreso → Completado
+- ✅ **Interfaz Responsiva** con TailwindCSS
+- ✅ **Tiempo Real** con Livewire 2
+- ✅ **Base de Datos SQLite** (fácil configuración)
+- ✅ **Configuración Dual** (Local + Docker)
+
+## 📁 Estructura del Proyecto
+
+```
+├── app/
+│   ├── Http/Livewire/          # Componentes Livewire
+│   │   ├── KanbanBoard.php     # Tablero principal
+│   │   ├── TaskCard.php        # Tarjetas de tareas
+│   │   └── CreateTaskForm.php  # Formulario de creación
+│   ├── Models/
+│   │   ├── Task.php           # Modelo de tareas
+│   │   └── User.php           # Modelo de usuarios
+│   └── Enums/
+│       └── TaskStatus.php     # Estados de tareas
+├── database/
+│   ├── migrations/            # Migraciones de BD
+│   ├── factories/            # Factories para datos de prueba
+│   └── seeders/              # Seeders con datos demo
+├── resources/views/
+│   ├── livewire/             # Vistas de componentes Livewire
+│   └── layouts/              # Layouts de la aplicación
+└── docker/                   # Configuración Docker para producción
+```
+
+## 🛠️ Tecnologías Utilizadas
+
+- **Backend**: Laravel 9.x + PHP 8.3
+- **Frontend**: Livewire 2.x + TailwindCSS + Alpine.js
+- **Base de Datos**: SQLite
+- **Autenticación**: Laravel Breeze
+- **Drag & Drop**: SortableJS
+- **Containerización**: Docker + Docker Compose
+
+## ⚡ Inicio Rápido
+
+### Opción 1: Configuración Automática
+
+```bash
+# Clonar el repositorio
+git clone https://github.com/imorlab/kanban-board.git
+cd kanban-board
+
+# Configuración inicial automática
+make setup
+
+# Iniciar servidor de desarrollo
+make serve
+```
+
+### Opción 2: Configuración Manual
+
+```bash
+# 1. Instalar dependencias
+composer install
+npm install
+
+# 2. Configurar entorno
+./setup-sqlite.sh
+php artisan key:generate
+
+# 3. Base de datos
+php artisan migrate
+php artisan db:seed
+
+# 4. Assets
+npm run build
+
+# 5. Servidor
+php artisan serve
+```
+
+## 🐳 Docker
+
+### Desarrollo
+```bash
+make docker      # Configurar y levantar
+make docker-down # Detener
+```
+
+### Producción
+```bash
+make prod-build  # Construir imagen optimizada
+make prod-up     # Levantar en producción
+make prod-logs   # Ver logs
+```
+
+## 🎯 Uso de la Aplicación
+
+### 1. **Autenticación**
+- Registrar nuevo usuario o usar demo: `demo@kanban.com` / `password`
+
+### 2. **Gestión de Tareas**
+- **Crear**: Botón "Nueva Tarea" en el tablero
+- **Editar**: Click en icono de editar en la tarjeta
+- **Mover**: Drag & drop entre columnas
+- **Eliminar**: Click en icono de eliminar (con confirmación)
+
+### 3. **Estados de Tareas**
+- 🔘 **Pendiente**: Tareas por hacer
+- 🔵 **En Progreso**: Tareas en desarrollo  
+- 🟢 **Completado**: Tareas finalizadas
+
+## 📊 Datos de Demostración
+
+El proyecto incluye un seeder con datos de prueba:
+- 1 usuario demo: `demo@kanban.com`
+- 9 tareas distribuidas en los 3 estados
+- Datos faker para títulos y descripciones realistas
+
+```bash
+# Regenerar datos demo
+php artisan migrate:fresh --seed
+```
+
+## 🔧 Comandos Útiles
+
+```bash
+# Ver todos los comandos disponibles
+make help
+
+# Desarrollo
+make serve           # Servidor local
+make dev            # Compilar assets (desarrollo)
+make build          # Compilar assets (producción)
+
+# Base de datos
+make migrate        # Ejecutar migraciones
+make migrate-fresh  # Recrear BD con seeders
+
+# Utilidades
+make clean          # Limpiar caches
+make test           # Ejecutar tests
+```
+
+## 🏗️ Arquitectura
+
+### Modelos
+- **User**: Usuario con relación hasMany a Task
+- **Task**: Tarea con enum TaskStatus y relación belongsTo a User
+
+### Componentes Livewire
+- **KanbanBoard**: Tablero principal con gestión de estado
+- **TaskCard**: Tarjeta individual con CRUD inline
+- **CreateTaskForm**: Formulario modal de creación
+
+### Estados y Transiciones
+```
+[Pendiente] → [En Progreso] → [Completado]
+     ↓              ↓              ↓
+  (gray)        (blue)        (green)
+```
+
+## 🧪 Testing
+
+```bash
+# Ejecutar todos los tests
+php artisan test
+
+# Tests específicos
+php artisan test --filter=TaskTest
+php artisan test --filter=KanbanBoardTest
+```
+
+## 📝 Funcionalidades Implementadas
+
+### ✅ Requisitos Básicos
+- [x] Sistema de autenticación completo
+- [x] CRUD de tareas con título, descripción y estado
+- [x] Tablero Kanban con 3 columnas
+- [x] Drag & drop funcional
+- [x] Actualización asíncrona con Livewire
+- [x] Tareas privadas por usuario
+
+### ✅ Características Adicionales
+- [x] Interfaz responsiva y moderna
+- [x] Validaciones frontend y backend
+- [x] Factory y seeders para datos de prueba
+- [x] Configuración Docker para producción
+- [x] Sistema de comandos con Makefile
+- [x] Documentación completa
+
+## 🚀 Próximas Mejoras
+
+- [ ] Sistema de auditoría para administradores
+- [ ] Notificaciones toast
+- [ ] Tests unitarios y de feature
+- [ ] API REST para integraciones
+- [ ] Websockets para colaboración en tiempo real
+- [ ] Filtros y búsqueda avanzada
+
+## 📄 Licencia
+
+Este proyecto es una prueba técnica y está disponible bajo la licencia MIT.
+
+## 👨‍💻 Desarrollo
+
+Desarrollado como prueba técnica para demostrar habilidades en:
+- Laravel + Livewire
+- TailwindCSS
+- SQLite
+- Docker
+- Git + GitHub
 
 ---
 
-## El Desafío: Mini-Trello - Gestor de Tareas Interactivo
+**¿Preguntas o sugerencias?** 
+Abre un [issue](https://github.com/imorlab/kanban-board/issues) o envía un PR! 🎯
+cd mini-trello
 
-El reto consiste en desarrollar un pequeño gestor de tareas al estilo "Kanban Board" (como Trello o Jira). La aplicación permitirá a los usuarios gestionar sus tareas a través de un tablero visual e interactivo. La clave del desafío es que toda la interactividad del frontend debe ser manejada con Livewire.
+# Instalación inicial (automática)
+make setup
+```
 
-### Requisitos Funcionales
+### 2. Elegir tu entorno de desarrollo
 
-1.  **Autenticación de Usuarios:**
-    *   La aplicación debe tener un sistema de registro e inicio de sesión.
-    *   Las tareas de cada usuario deben ser privadas y solo visibles por él mismo.
+#### Opción A: Desarrollo Local
 
-2.  **Gestión de Tareas (CRUD):**
-    *   Un usuario autenticado debe poder crear, leer, actualizar y eliminar sus propias tareas.
-    *   Cada tarea debe tener, como mínimo, un `título`, una `descripción` y un `estado`.
+```bash
+# Configurar para local
+make local
 
-3.  **Tablero Kanban Interactivo:**
-    *   La vista principal después de iniciar sesión será un tablero Kanban con tres columnas: **"Pendiente"**, **"En Progreso"** y **"Completado"**.
-    *   Las tareas del usuario se mostrarán en la columna correspondiente a su estado.
-    *   **Funcionalidad clave:** El usuario debe poder arrastrar y soltar (`drag and drop`) una tarea de una columna a otra.
-    *   Al mover una tarea, su estado debe actualizarse en la base de datos de forma asíncrona (sin recargar la página), utilizando Livewire.
+# Iniciar servidor
+make serve
+# o directamente: php artisan serve
+```
 
-4.  **Auditoría:**
-    *   La aplicación debe tener una auditoría de tipo "audit trail" para registrar las acciones del usuario.
-    *   La auditoria solo debe de ser posible verla para un usuario administrativo (admin).
+La aplicación estará disponible en: http://127.0.0.1:8000
 
-### Requisitos Técnicos
+#### Opción B: Desarrollo con Docker
 
-*   **Backend:** Laravel 9.
-*   **Frontend:** Toda la lógica interactiva debe ser implementada con Livewire 2 (tienes que instalar la dependencia de Livewire en el proyecto).
-*   **Base de Datos:** Utilizar **SQLite**. Esto simplifica la configuración para que puedas enfocarte en el código. El archivo de la base de datos debe estar incluido en el directorio `database/`.
-*   **Estilos:** Eres libre de usar el framework CSS que prefieras (TailwindCSS es recomendado por su buena integración con Livewire), o incluso CSS puro. Lo importante es que la interfaz sea limpia, usable y estéticamente agradable.
+```bash
+# Configurar para Docker
+make docker
+```
+
+La aplicación estará disponible en: http://localhost
+
+### 3. Cambiar entre entornos
+
+Puedes cambiar entre local y Docker en cualquier momento:
+
+```bash
+# Cambiar a local
+./switch-env.sh local
+php artisan serve
+
+# Cambiar a Docker
+./switch-env.sh docker
+./vendor/bin/sail up -d
+```
+
+## Estructura de Configuración
+
+- `.env` - Configuración activa actual
+- `.env.local` - Configuración para desarrollo local  
+- `.env.docker` - Configuración para Docker
+- `switch-env.sh` - Script para cambiar entre configuraciones
+
+## Comandos Útiles
+
+### Laravel Artisan
+```bash
+# Migraciones
+php artisan migrate
+php artisan migrate:fresh --seed
+
+# Cache
+php artisan cache:clear
+php artisan config:clear
+
+# Tests
+php artisan test
+```
+
+### Con Docker (usando Sail)
+```bash
+# Comandos Artisan
+./vendor/bin/sail artisan migrate
+
+# NPM
+./vendor/bin/sail npm install
+./vendor/bin/sail npm run dev
+
+# Tests
+./vendor/bin/sail test
+```
+
+### Compilar Assets
+```bash
+# Desarrollo
+npm run dev
+
+# Producción  
+npm run build
+
+# Watch mode
+npm run watch
+```
+
+## Troubleshooting
+
+### Problema con permisos de SQLite
+```bash
+# Asegurar permisos correctos
+chmod 664 database/database.sqlite
+chmod 775 database/
+```
+
+### Limpiar todo y empezar de nuevo
+```bash
+make clean
+php artisan migrate:fresh
+npm run build
+```
+
+### Docker no inicia
+Asegúrate de que Docker Desktop esté ejecutándose:
+```bash
+# Verificar Docker
+docker --version
+docker-compose --version
+
+# Reconstruir contenedores
+make docker-build
+```
+
+## Desarrollo
+
+1. **Instalar Livewire**: El siguiente paso es instalar Livewire para la interactividad
+2. **Crear modelos**: Task, TaskStatus, etc.
+3. **Implementar autenticación**: Laravel Breeze o similar
+4. **Crear componentes Livewire**: Para el tablero Kanban
+5. **Styling**: TailwindCSS para el diseño
 
 ---
 
-### Puntos Extra (Opcionales pero muy valorados)
-
-Estos puntos nos permitirán ver tu potencial y tu dominio de buenas prácticas:
-
-*   **Testing:** Añadir pruebas (unitarias o de feature) para las funcionalidades críticas. El uso de Pest o PHPUnit es bienvenido.
-*   **Validación de Formularios:** Implementar validaciones robustas tanto en el frontend (con Livewire) como en el backend.
-*   **Notificaciones:** Mostrar notificaciones al usuario tras realizar acciones (ej. "¡Tarea creada con éxito!").
-*   **Diseño de Componentes:** Estructurar la aplicación en componentes de Livewire reutilizables y bien organizados.
-*   **Calidad del Código:** Seguir los estándares de codificación de Laravel (PSR-12), uso de `strong types` de PHP, y código claro y bien comentado (en inglés).
-*   **Historial de Git:** Realizar commits atómicos y descriptivos que cuenten la historia del desarrollo.
-*   **Contenerización para Producción:** Crear un archivo `docker-compose.yml` optimizado para un entorno de producción (utilizando Nginx, PHP-FPM, etc.).
-
----
-
-### Cómo Instalar y Ejecutar el Proyecto
-
-Este proyecto está configurado para funcionar con **Laravel Sail**, el entorno de desarrollo por defecto de Laravel basado en Docker. No necesitas tener PHP o Composer instalados en tu máquina local, solo [Docker](https://www.docker.com/get-started).
-
-1.  **Clona el repositorio y navega al directorio.**
-
-2.  **Prepara el entorno:**
-    Ejecuta el script de configuración para SQLite (o copia el archivo de entorno manualmente):
-    ```bash
-    ./setup-sqlite.sh
-    ```
-    O alternativamente:
-    ```bash
-    cp .env.example .env
-    ```
-
-3.  **Levanta los contenedores con Sail:**
-    La primera vez que ejecutes este comando, Sail construirá las imágenes de tu aplicación. Esto puede tardar varios minutos.
-    ```bash
-    ./vendor/bin/sail up -d
-    ```
-
-4.  **Genera la clave de la aplicación y ejecuta las migraciones:**
-    ```bash
-    ./vendor/bin/sail artisan key:generate
-    ./vendor/bin/sail artisan migrate
-    ```
-    *Nota: Como usamos SQLite, la migración creará el archivo `database/database.sqlite` dentro del contenedor.*
-
-5.  **Instala las dependencias de NPM y compila los assets:**
-    ```bash
-    ./vendor/bin/sail npm install
-    ./vendor/bin/sail npm run dev
-    ```
-
-¡Y listo! La aplicación estará disponible en `http://localhost`.
-
----
-
-### Instrucciones de Entrega
-
-1.  Crea un repositorio público en tu cuenta de GitHub o GitLab.
-2.  Realiza tu desarrollo en el repositorio, usando un historial de commits claro.
-3.  Cuando hayas finalizado, envía el enlace de tu repositorio a la persona de contacto que te envió esta prueba.
-
-### Plazo
-
-Tienes un plazo de **5 días** a partir de la recepción de esta prueba para enviarnos tu solución.
-
----
-
-¡Mucha suerte! Estamos muy interesados en ver tu trabajo. Si tienes alguna pregunta, no dudes en contactarnos.
+¿Problemas? Revisa los logs:
+- Local: `storage/logs/laravel.log`
+- Docker: `./vendor/bin/sail logs`

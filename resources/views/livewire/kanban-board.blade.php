@@ -1,8 +1,8 @@
 <div class="p-6">
     <!-- Header -->
     <div class="flex justify-between items-center mb-6">
-        <h1 class="text-2xl font-bold text-gray-900">Mi Tablero Kanban</h1>
-        <button 
+        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Mi Tablero Kanban</h1>
+        <button
             wire:click="toggleCreateForm"
             class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors"
         >
@@ -13,22 +13,75 @@
         </button>
     </div>
 
-    <!-- Create Task Form Modal -->
-    @if($showCreateForm)
-    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50">
-        <div class="bg-white rounded-lg p-6 w-full max-w-md">
-            @livewire('create-task-form')
-            <div class="flex justify-end mt-4">
-                <button 
-                    wire:click="toggleCreateForm"
-                    class="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
-                >
-                    Cancelar
-                </button>
+    <!-- Create Task Form Sidebar -->
+    <div class="min-h-screen bg-gray-100 dark:bg-gray-900"
+     x-data="{
+         showCreateForm: @entangle('showCreateForm'),
+         disableInteractions() {
+             this.$nextTick(() => disableKanbanInteractions());
+         },
+         enableInteractions() {
+             this.$nextTick(() => enableKanbanInteractions());
+         }
+     }"
+     x-init="$watch('showCreateForm', value => value ? disableInteractions() : enableInteractions())">
+    <div class="container mx-auto px-4 py-8">
+
+        <!-- Background overlay -->
+        <div x-show="showCreateForm"
+             x-transition:enter="transition-opacity ease-linear duration-300"
+             x-transition:enter-start="opacity-0"
+             x-transition:enter-end="opacity-100"
+             x-transition:leave="transition-opacity ease-linear duration-300"
+             x-transition:leave-start="opacity-100"
+             x-transition:leave-end="opacity-0"
+             class="fixed inset-0 bg-gray-900 bg-opacity-75 z-[100]"
+             @click="$wire.set('showCreateForm', false)"
+             style="display: none;"></div>
+
+        <!-- Sidebar -->
+        <div x-show="showCreateForm"
+             x-transition:enter="transform transition ease-in-out duration-500"
+             x-transition:enter-start="translate-x-full"
+             x-transition:enter-end="translate-x-0"
+             x-transition:leave="transform transition ease-in-out duration-500"
+             x-transition:leave-start="translate-x-0"
+             x-transition:leave-end="translate-x-full"
+             class="fixed inset-y-0 right-0 flex max-w-full pl-10 sm:pl-16 z-[110]"
+             style="display: none;">
+            <div class="w-screen max-w-md">
+
+                <div class="flex h-full flex-col bg-white shadow-xl relative z-[110]">
+                    <!-- Header -->
+                    <div class="bg-blue-600 px-4 py-6 sm:px-6">
+                        <div class="flex items-center justify-between">
+                            <h2 class="text-lg font-medium text-white">Nueva Tarea</h2>
+                            <div class="ml-3 flex h-7 items-center">
+                                <button type="button"
+                                        @click="$wire.set('showCreateForm', false)"
+                                        class="rounded-md bg-blue-600 text-blue-200 hover:text-white focus:outline-none focus:ring-2 focus:ring-white">
+                                    <span class="sr-only">Cerrar panel</span>
+                                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="mt-1">
+                            <p class="text-sm text-blue-300">Crea una nueva tarea para tu tablero Kanban</p>
+                        </div>
+                    </div>
+
+                    <!-- Content -->
+                    <div class="relative flex-1 px-4 py-6 sm:px-6">
+                        @if($showCreateForm)
+                            @livewire('create-task-form')
+                        @endif
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    @endif
 
     <!-- Kanban Board -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="kanban-board">
@@ -87,7 +140,7 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const columns = document.querySelectorAll('[data-status]');
-        
+
         columns.forEach(column => {
             new Sortable(column, {
                 group: 'kanban',
@@ -98,11 +151,25 @@
                     const taskId = evt.item.dataset.taskId;
                     const newStatus = evt.to.dataset.status;
                     const newOrder = evt.newIndex + 1;
-                    
+
                     @this.call('handleTaskMoved', taskId, newStatus, newOrder);
                 }
             });
         });
     });
+
+    function disableKanbanInteractions() {
+        const kanbanBoard = document.getElementById('kanban-board');
+        if (kanbanBoard) {
+            kanbanBoard.style.pointerEvents = 'none';
+        }
+    }
+
+    function enableKanbanInteractions() {
+        const kanbanBoard = document.getElementById('kanban-board');
+        if (kanbanBoard) {
+            kanbanBoard.style.pointerEvents = 'auto';
+        }
+    }
 </script>
 @endpush

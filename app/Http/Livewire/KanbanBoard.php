@@ -11,7 +11,7 @@ class KanbanBoard extends Component
     public $showCreateForm = false;
 
     protected $listeners = [
-        'taskCreated' => 'refreshTasks',
+        'taskCreated' => 'handleTaskCreated',
         'taskUpdated' => 'refreshTasks',
         'taskMoved' => 'handleTaskMoved',
     ];
@@ -27,10 +27,16 @@ class KanbanBoard extends Component
         $this->emit('tasksRefreshed');
     }
 
+    public function handleTaskCreated()
+    {
+        $this->showCreateForm = false; // Close the sidebar
+        $this->refreshTasks(); // Refresh the tasks
+    }
+
     public function handleTaskMoved($taskId, $newStatus, $newOrder)
     {
         $task = Task::findOrFail($taskId);
-        
+
         // Check if user owns the task
         if ($task->user_id !== auth()->id()) {
             return;
@@ -52,7 +58,7 @@ class KanbanBoard extends Component
     public function render()
     {
         $user = auth()->user();
-        
+
         $tasks = [
             'pending' => $user->tasks()->ofStatus(TaskStatus::PENDING)->ordered()->get(),
             'in_progress' => $user->tasks()->ofStatus(TaskStatus::IN_PROGRESS)->ordered()->get(),

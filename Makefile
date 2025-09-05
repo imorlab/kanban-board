@@ -70,9 +70,18 @@ clean: ## Limpiar caches
 	php artisan route:clear
 	php artisan view:clear
 
-dev: ## Compilar assets en modo desarrollo
-	@echo "$(GREEN)Compilando assets...$(NC)"
+dev: ## Compilar assets en modo desarrollo (con watch)
+	@echo "$(GREEN)Iniciando Vite dev server...$(NC)"
+	@echo "$(YELLOW)Nota: Ejecuta 'make serve' en otra terminal para el servidor Laravel$(NC)"
 	npm run dev
+
+dev-build: ## Compilar assets una vez para desarrollo
+	@echo "$(GREEN)Compilando assets para desarrollo...$(NC)"
+	npm run build
+
+full-dev: ## Compilar assets y iniciar servidor (solo Linux/macOS)
+	@echo "$(GREEN)Compilando assets e iniciando servidor...$(NC)"
+	npm run build && php artisan serve
 
 build: ## Compilar assets para producción
 	@echo "$(GREEN)Compilando assets para producción...$(NC)"

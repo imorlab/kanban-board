@@ -1,4 +1,4 @@
-<div 
+<div
     class="bg-white rounded-lg p-4 shadow-sm border border-gray-200 cursor-move hover:shadow-md transition-shadow"
     data-task-id="{{ $task->id }}"
 >
@@ -9,14 +9,14 @@
             @if($task->description)
                 <p class="text-sm text-gray-600 line-clamp-3">{{ $task->description }}</p>
             @endif
-            
+
             <div class="flex justify-between items-center pt-2">
                 <span class="text-xs text-gray-500">
                     {{ $task->created_at->diffForHumans() }}
                 </span>
-                
+
                 <div class="flex gap-1">
-                    <button 
+                    <button
                         wire:click="toggleEdit"
                         class="p-1 text-gray-400 hover:text-blue-500 transition-colors"
                         title="Editar"
@@ -25,8 +25,8 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                         </svg>
                     </button>
-                    
-                    <button 
+
+                    <button
                         wire:click="deleteTask"
                         wire:confirm="¿Estás seguro de que quieres eliminar esta tarea?"
                         class="p-1 text-gray-400 hover:text-red-500 transition-colors"
@@ -43,38 +43,38 @@
         <!-- Task Edit Form -->
         <form wire:submit.prevent="updateTask" class="space-y-3">
             <div>
-                <input 
+                <input
                     wire:model="title"
-                    type="text" 
+                    type="text"
                     class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     placeholder="Título de la tarea"
                     required
                 >
-                @error('title') 
-                    <span class="text-red-500 text-xs">{{ $message }}</span> 
+                @error('title')
+                    <span class="text-red-500 text-xs">{{ $message }}</span>
                 @enderror
             </div>
-            
+
             <div>
-                <textarea 
+                <textarea
                     wire:model="description"
                     class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
                     rows="3"
                     placeholder="Descripción (opcional)"
                 ></textarea>
-                @error('description') 
-                    <span class="text-red-500 text-xs">{{ $message }}</span> 
+                @error('description')
+                    <span class="text-red-500 text-xs">{{ $message }}</span>
                 @enderror
             </div>
-            
+
             <div class="flex gap-2 pt-2">
-                <button 
+                <button
                     type="submit"
                     class="px-3 py-1 bg-blue-500 text-white text-sm rounded hover:bg-blue-600 transition-colors"
                 >
                     Guardar
                 </button>
-                <button 
+                <button
                     type="button"
                     wire:click="toggleEdit"
                     class="px-3 py-1 bg-gray-300 text-gray-700 text-sm rounded hover:bg-gray-400 transition-colors"

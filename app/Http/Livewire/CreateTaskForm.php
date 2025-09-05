@@ -12,6 +12,10 @@ class CreateTaskForm extends Component
     public $description = '';
     public $status = 'pending';
 
+    protected $listeners = [
+        'toggleCreateForm' => 'closeForm',
+    ];
+
     protected $rules = [
         'title' => 'required|string|max:255',
         'description' => 'nullable|string|max:1000',
@@ -23,12 +27,19 @@ class CreateTaskForm extends Component
         $this->status = TaskStatus::PENDING->value;
     }
 
+    public function closeForm()
+    {
+        $this->reset(['title', 'description']);
+        $this->status = TaskStatus::PENDING->value;
+        $this->emit('taskCreated'); // This will close the sidebar
+    }
+
     public function createTask()
     {
         $this->validate();
 
         $user = auth()->user();
-        
+
         // Get the next sort order for the selected status
         $maxOrder = $user->tasks()
             ->where('status', $this->status)
@@ -46,10 +57,10 @@ class CreateTaskForm extends Component
         $this->reset(['title', 'description']);
         $this->status = TaskStatus::PENDING->value;
 
-        // Emit event to refresh parent component
+        // Emit event to refresh parent component and close sidebar
         $this->emit('taskCreated');
 
-        session()->flash('message', 'Tarea creada correctamente.');
+        session()->flash('message', '¡Tarea creada correctamente!');
     }
 
     public function render()

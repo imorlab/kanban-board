@@ -27,7 +27,7 @@ class TaskCard extends Component
     public function toggleEdit()
     {
         $this->showEditForm = !$this->showEditForm;
-        
+
         if (!$this->showEditForm) {
             // Reset to original values if cancelled
             $this->title = $this->task->title;
@@ -51,7 +51,7 @@ class TaskCard extends Component
 
         $this->showEditForm = false;
         $this->emit('taskUpdated');
-        
+
         session()->flash('message', 'Tarea actualizada correctamente.');
     }
 
@@ -64,7 +64,7 @@ class TaskCard extends Component
 
         $this->task->delete();
         $this->emit('taskUpdated');
-        
+
         session()->flash('message', 'Tarea eliminada correctamente.');
     }
 

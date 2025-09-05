@@ -75,7 +75,28 @@ make setup
 make serve
 ```
 
-### Opción 2: Configuración Manual
+### Opción 2: Docker (Recomendado)
+
+```bash
+# 1. Instalar dependencias
+composer install
+npm install
+
+# 2. Un solo comando para configurar todo
+./docker-helper.sh setup
+
+# 3. ¡Listo! Acceder a http://localhost:8080
+```
+
+**Comandos Docker útiles:**
+```bash
+./docker-helper.sh start    # Iniciar contenedores
+./docker-helper.sh stop     # Detener contenedores  
+./docker-helper.sh status   # Ver estado
+./docker-helper.sh logs     # Ver logs
+```
+
+### Opción 3: Configuración Manual
 
 ```bash
 # 1. Instalar dependencias
@@ -99,17 +120,43 @@ php artisan serve
 
 ## 🐳 Docker
 
-### Desarrollo
+### Configuración con Docker (Recomendada)
+
+**Prerrequisitos**: Tener Docker Desktop instalado y corriendo
+
 ```bash
-make docker      # Configurar y levantar
-make docker-down # Detener
+# 1. Instalar dependencias
+composer install && npm install
+
+# 2. Configurar todo automáticamente
+./docker-helper.sh setup
+
+# 3. ¡Listo! La aplicación está en http://localhost:8080
 ```
 
-### Producción
+### Comandos Docker útiles
+
 ```bash
-make prod-build  # Construir imagen optimizada
-make prod-up     # Levantar en producción
-make prod-logs   # Ver logs
+./docker-helper.sh start    # Iniciar contenedores
+./docker-helper.sh stop     # Detener contenedores
+./docker-helper.sh status   # Ver estado
+./docker-helper.sh logs     # Ver logs
+./docker-helper.sh migrate  # Ejecutar migraciones
+```
+
+### Comandos Laravel dentro de Docker
+
+```bash
+./vendor/bin/sail artisan migrate  # Migraciones
+./vendor/bin/sail artisan tinker   # Console interactiva
+./vendor/bin/sail npm run dev      # Assets en desarrollo
+./vendor/bin/sail composer install # Instalar paquetes PHP
+```
+
+### Docker Producción
+
+```bash
+docker-compose -f docker-compose.prod.yml up -d --build
 ```
 
 ## 🎯 Uso de la Aplicación

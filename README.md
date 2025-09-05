@@ -6,7 +6,8 @@
 [![Livewire](https://img.shields.io/badge/Livewire-2.x-purple.svg)](https://laravel-livewire.com)
 [![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.x-blue.svg)](https://tailwindcss.com)
 [![SweetAlert2](https://img.shields.io/badge/SweetAlert2-11.x-orange.svg)](https://sweetalert2.github.io)
-[![SQLite](https://img.shields.io/badge/Database-SQLite-green.svg)](https://sqlite.org)
+[![Spatie ActivityLog](https://img.shields.io/badge/Spatie-ActivityLog-green.svg)](https://spatie.be/docs/laravel-activitylog)
+[![SQLite](https://img.shields.io/badge/Database-SQLite-blue.svg)](https://sqlite.org)
 
 ## 🚀 Características
 
@@ -14,6 +15,8 @@
 - ✅ **Autenticación Completa** (registro, login, perfil)
 - ✅ **Gestión de Tareas CRUD** (crear, leer, actualizar, eliminar)
 - ✅ **Estados de Tareas**: Pendiente → En Progreso → Completado
+- ✅ **Sistema de Auditoría** completo con Spatie ActivityLog
+- ✅ **Panel Administrativo** para visualizar audit trail
 - ✅ **Notificaciones Interactivas** con SweetAlert2
 - ✅ **Sistema de Traducciones** (Inglés/Español)
 - ✅ **Interfaz Responsiva** con TailwindCSS + Alpine.js
@@ -50,6 +53,7 @@
 - **Frontend**: Livewire 2.x + TailwindCSS + Alpine.js + SweetAlert2
 - **Base de Datos**: SQLite
 - **Autenticación**: Laravel Breeze
+- **Auditoría**: Spatie Laravel ActivityLog
 - **Drag & Drop**: SortableJS
 - **Notificaciones**: SweetAlert2 (integrada via NPM)
 - **Traducciones**: Laravel i18n (inglés incluido)
@@ -112,6 +116,7 @@ make prod-logs   # Ver logs
 
 ### 1. **Autenticación**
 - Registrar nuevo usuario o usar demo: `demo@kanban.com` / `password`
+- Usuario admin: `admin@kanban.com` / `password` (para acceder al audit log)
 
 ### 2. **Gestión de Tareas**
 - **Crear**: Botón "Nueva Tarea" en el tablero → Formulario sidebar
@@ -119,21 +124,30 @@ make prod-logs   # Ver logs
 - **Mover**: Drag & drop entre columnas → Notificación automática
 - **Eliminar**: Click en icono de eliminar → Confirmación SweetAlert2
 
-### 3. **Notificaciones Interactivas**
+### 3. **Sistema de Auditoría** 🔍
+- **Acceso**: Solo usuarios admin pueden ver "Audit Log" en navegación
+- **Funcionalidad**: Registra automáticamente todas las acciones CRUD
+- **Información**: Usuario, fecha/hora, evento, cambios realizados
+- **Búsqueda**: Filtrar actividades por descripción o evento
+
+### 4. **Notificaciones Interactivas**
 - 🎉 **Creación de tareas**: Modal de confirmación
 - 📝 **Actualización**: Toast discreto en esquina superior
 - 🚀 **Movimiento**: Toast con estado destino
 - 🗑️ **Eliminación**: Confirmación + notificación de éxito
 
-### 4. **Estados de Tareas**
+### 5. **Estados de Tareas**
 - 🔘 **Pendiente**: Tareas por hacer
 - 🔵 **En Progreso**: Tareas en desarrollo  
 - 🟢 **Completado**: Tareas finalizadas
 
 ## 📊 Datos de Demostración
 
-El proyecto incluye un seeder con datos de prueba:
-- 1 usuario demo: `demo@kanban.com`
+El proyecto incluye seeders con datos de prueba:
+- **Usuario demo**: `demo@kanban.com` / `password`
+- **Usuario admin**: `admin@kanban.com` / `password` (acceso al audit log)
+- **9 tareas** distribuidas en los 3 estados
+- **Datos faker** para títulos y descripciones realistas
 - 9 tareas distribuidas en los 3 estados
 - Datos faker para títulos y descripciones realistas
 
@@ -200,6 +214,25 @@ make test           # Ejecutar tests
 - **Formularios Reactivos**: Validación en tiempo real con Livewire
 - **Sidebar Deslizante**: Formulario de creación con overlay y animaciones
 
+## 🔍 Sistema de Auditoría
+
+### Características
+- **Paquete**: Spatie Laravel ActivityLog v4
+- **Logging Automático**: Todas las operaciones CRUD en tareas
+- **Información Registrada**: Usuario, fecha/hora, evento, cambios
+- **Acceso Restringido**: Solo usuarios administradores
+
+### Funcionalidades
+- **Vista Paginada**: Lista completa de actividades con paginación
+- **Búsqueda Avanzada**: Filtrar por descripción o tipo de evento
+- **Detalles de Cambios**: Ver valores anteriores y nuevos
+- **Timestamps Precisos**: Fecha y hora exacta de cada acción
+
+### Eventos Registrados
+- **Created**: Creación de nuevas tareas
+- **Updated**: Modificación de título, descripción o estado
+- **Deleted**: Eliminación de tareas
+
 ## 🧪 Testing
 
 ```bash
@@ -220,6 +253,8 @@ php artisan test --filter=KanbanBoardTest
 - [x] Drag & drop funcional
 - [x] Actualización asíncrona con Livewire
 - [x] Tareas privadas por usuario
+- [x] **Sistema de auditoría** con Spatie ActivityLog
+- [x] **Panel administrativo** para visualizar audit trail
 
 ### ✅ Características Adicionales
 - [x] Interfaz responsiva y moderna
@@ -227,6 +262,8 @@ php artisan test --filter=KanbanBoardTest
 - [x] Sistema de traducciones (archivo `lang/en/front.php`)
 - [x] Confirmaciones de eliminación interactivas
 - [x] Toast notifications para feedback inmediato
+- [x] Usuario administrador con permisos especiales
+- [x] Logging automático de todas las acciones CRUD
 - [x] Validaciones frontend y backend
 - [x] Factory y seeders para datos de prueba
 - [x] Configuración Docker para producción
@@ -235,11 +272,10 @@ php artisan test --filter=KanbanBoardTest
 
 ## 🚀 Próximas Mejoras
 
-- [ ] Sistema de auditoría para administradores
 - [ ] Tests unitarios y de feature completos
 - [ ] API REST para integraciones
 - [ ] Websockets para colaboración en tiempo real
-- [ ] Filtros y búsqueda avanzada
+- [ ] Filtros y búsqueda avanzada en el tablero
 - [ ] Sistema de etiquetas/categorías
 - [ ] Fechas de vencimiento
 - [ ] Múltiples tableros por usuario

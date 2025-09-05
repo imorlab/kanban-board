@@ -2,7 +2,7 @@
 
 return [
     // Navigation & General
-    'dashboard' => 'My Kanban Board',
+    'dashboard' => 'Dashboard',
 
     // Kanban Board
     'kanban_title' => 'My Kanban Board',
@@ -61,8 +61,19 @@ return [
     'status_completed' => 'Completed',
 
     // Dashboard
-    'dashboard' => 'My Kanban Board',
     'dashboard_greeting' => "You're logged in!",
     'go_to_kanban' => 'Go to Kanban Board',
     'manage_tasks' => 'Manage your tasks with our interactive Kanban board',
+
+    // Audit Log
+    'audit_log' => 'Audit Log',
+    'audit_log_description' => 'System activity and user actions tracking',
+    'search_activities' => 'Search activities...',
+    'event' => 'Event',
+    'user' => 'User',
+    'date' => 'Date',
+    'changes' => 'Changes',
+    'no_changes_recorded' => 'No changes recorded',
+    'no_activity_logs_found' => 'No activity logs found',
+    'system_activity_tracking' => 'System activity and user actions tracking',
 ];

@@ -59,45 +59,175 @@
 
 ## ⚡ Inicio Rápido
 
-### Opción 1: Configuración Automática
+### 1. Instalación Inicial
 
 ```bash
 # Clonar el repositorio
 git clone https://github.com/imorlab/kanban-board.git
 cd kanban-board
 
-# Configuración inicial automática
-make setup
+# Instalar dependencias
+composer install && npm install
 
-# Iniciar servidor de desarrollo
-make serve
-```
-
-### Opción 2: Docker (Recomendado)
-
-```bash
-# 1. Instalar dependencias
-composer install
-npm install
-
-# 2. Un solo comando para configurar todo
+# Configuración automática (crea archivos .env necesarios)
 ./docker-helper.sh setup
-
-# 3. ¡Listo! Acceder a http://localhost:8080
 ```
 
-**Comandos Docker útiles:**
+### 2. Elegir Entorno de Desarrollo
+
+#### 🏠 **Desarrollo Local**
 ```bash
-./docker-helper.sh start    # Iniciar contenedores
-./docker-helper.sh stop     # Detener contenedores  
-./docker-helper.sh status   # Ver estado
-./docker-helper.sh logs     # Ver logs
+./docker-helper.sh local
+php artisan serve
+```
+👉 Disponible en: http://127.0.0.1:8000
+
+#### 🐳 **Desarrollo con Docker** (Recomendado)
+```bash
+./docker-helper.sh docker  
+```
+👉 Disponible en: http://localhost:8080
+
+### 3. 🔄 Cambiar Entre Entornos
+
+```bash
+# Ver configuración actual
+./docker-helper.sh config
+
+# Cambiar a local (detiene Docker automáticamente)
+./docker-helper.sh local
+
+# Cambiar a Docker (inicia contenedores automáticamente)  
+./docker-helper.sh docker
 ```
 
-### Opción 3: Configuración Manual
+## 🛠️ Gestión de Configuraciones
+
+### ¿Por qué Configuraciones Separadas?
+
+La aplicación **requiere rutas diferentes** según el entorno:
+
+| Configuración | 🏠 Local | 🐳 Docker |
+|---------------|----------|-----------|
+| **Base de datos** | `/ruta/completa/database.sqlite` | `/var/www/html/database/database.sqlite` |
+| **Redis** | `127.0.0.1:6379` | `redis:6379` |
+| **URL** | `http://127.0.0.1:8000` | `http://localhost:8080` |
+
+### Archivos de Configuración
+
+- `.env` → **Configuración activa** (se cambia automáticamente)
+- `.env.local.example` → Template para desarrollo local  
+- `.env.docker.example` → Template para Docker
+- `docker-helper.sh` → Script para gestión automática de entornos
+
+### Comandos Disponibles
 
 ```bash
-# 1. Instalar dependencias
+# 🔄 Gestión de entornos
+./docker-helper.sh local      # Cambiar a configuración LOCAL
+./docker-helper.sh docker     # Cambiar a configuración DOCKER  
+./docker-helper.sh config     # Ver configuración actual
+
+# 🐳 Docker
+./docker-helper.sh start      # Iniciar contenedores
+./docker-helper.sh stop       # Detener contenedores
+./docker-helper.sh status     # Estado de contenedores
+./docker-helper.sh logs       # Ver logs
+
+# 🔧 Utilidades  
+./docker-helper.sh setup      # Configuración inicial
+./docker-helper.sh migrate    # Ejecutar migraciones
+./docker-helper.sh help       # Ver todos los comandos
+```
+
+## 🔧 Comandos Útiles Adicionales
+
+### Laravel Artisan (Local)
+```bash
+php artisan migrate           # Ejecutar migraciones
+php artisan migrate:fresh --seed  # Recrear BD con datos demo
+php artisan cache:clear       # Limpiar caché
+php artisan config:clear      # Limpiar config cache
+php artisan test             # Ejecutar tests
+```
+
+### Laravel Sail (Docker)
+```bash
+./vendor/bin/sail artisan migrate    # Migraciones
+./vendor/bin/sail artisan tinker     # Consola interactiva
+./vendor/bin/sail npm run dev        # Assets desarrollo
+./vendor/bin/sail test              # Tests
+```
+
+### Compilación de Assets
+```bash
+npm run dev      # Desarrollo con watch
+npm run build    # Compilación optimizada para producción
+```
+
+## ⚠️ Troubleshooting
+
+### 🔄 Problemas de Configuración
+
+**Error: Database not found**
+```bash
+# 1. Verificar configuración actual
+./docker-helper.sh config
+
+# 2. Cambiar al entorno correcto
+./docker-helper.sh local   # o docker
+
+# 3. Si persiste, limpiar caché
+php artisan config:clear   # Local
+# o
+./vendor/bin/sail artisan config:clear  # Docker
+```
+
+**Error: Port already in use**
+```bash
+# Para Docker (puerto 8080 ocupado)
+./docker-helper.sh stop
+docker ps  # Verificar que no hay contenedores corriendo
+
+# Para local (puerto 8000 ocupado)  
+php artisan serve --port=8001
+```
+
+### 🐳 Problemas con Docker
+
+**Contenedores no inician**
+```bash
+# Verificar Docker Desktop
+docker --version
+
+# Reiniciar completamente
+./docker-helper.sh stop
+./vendor/bin/sail down
+./vendor/bin/sail up -d
+```
+
+**Permisos de archivos SQLite**
+```bash
+chmod 664 database/database.sqlite
+chmod 775 database/
+```
+
+### 🔧 Reset Completo
+
+Si nada funciona, reset completo:
+```bash
+# Detener todo
+./docker-helper.sh stop
+
+# Limpiar archivos y caché
+rm .env
+php artisan config:clear 2>/dev/null || true
+php artisan cache:clear 2>/dev/null || true
+
+# Configurar de nuevo
+./docker-helper.sh setup
+./docker-helper.sh docker  # o local
+```
 composer install
 npm install
 
@@ -114,47 +244,6 @@ npm run build
 
 # 5. Servidor
 php artisan serve
-```
-
-## 🐳 Docker
-
-### Configuración con Docker (Recomendada)
-
-**Prerrequisitos**: Tener Docker Desktop instalado y corriendo
-
-```bash
-# 1. Instalar dependencias
-composer install && npm install
-
-# 2. Configurar todo automáticamente
-./docker-helper.sh setup
-
-# 3. ¡Listo! La aplicación está en http://localhost:8080
-```
-
-### Comandos Docker útiles
-
-```bash
-./docker-helper.sh start    # Iniciar contenedores
-./docker-helper.sh stop     # Detener contenedores
-./docker-helper.sh status   # Ver estado
-./docker-helper.sh logs     # Ver logs
-./docker-helper.sh migrate  # Ejecutar migraciones
-```
-
-### Comandos Laravel dentro de Docker
-
-```bash
-./vendor/bin/sail artisan migrate  # Migraciones
-./vendor/bin/sail artisan tinker   # Console interactiva
-./vendor/bin/sail npm run dev      # Assets en desarrollo
-./vendor/bin/sail composer install # Instalar paquetes PHP
-```
-
-### Docker Producción
-
-```bash
-docker-compose -f docker-compose.prod.yml up -d --build
 ```
 
 ## 🎯 Uso de la Aplicación
@@ -474,158 +563,3 @@ Desarrollado para demostrar habilidades en:
 
 **¿Preguntas o sugerencias?** 
 Abre un [issue](https://github.com/imorlab/kanban-board/issues) o envía un PR! 🎯
-cd mini-trello
-
-# Instalación inicial (automática)
-make setup
-```
-
-### 2. Elegir tu entorno de desarrollo
-
-#### Opción A: Desarrollo Local
-
-```bash
-# Configurar para local
-make local
-
-# Iniciar servidor
-make serve
-# o directamente: php artisan serve
-```
-
-La aplicación estará disponible en: http://127.0.0.1:8000
-
-#### Opción B: Desarrollo con Docker
-
-```bash
-# Configurar para Docker
-make docker
-```
-
-La aplicación estará disponible en: http://localhost
-
-### 3. Cambiar entre entornos
-
-Puedes cambiar entre local y Docker en cualquier momento:
-
-```bash
-# Cambiar a local
-cp .env.local .env  # (crea desde .env.local.example si no existe)
-php artisan serve
-
-# Cambiar a Docker  
-cp .env.docker .env  # (crea desde .env.docker.example si no existe)
-./vendor/bin/sail up -d
-```
-
-## ⚠️ Configuraciones de Entorno Necesarias
-
-**¿Por qué necesitamos archivos .env separados?**
-
-La aplicación **requiere configuraciones diferentes** para funcionar correctamente:
-
-| Configuración | Local | Docker |
-|---------------|-------|--------|
-| **Base de datos** | `/absolute/path/database/database.sqlite` | `/var/www/html/database/database.sqlite` |
-| **Redis Host** | `127.0.0.1` | `redis` |
-| **Mail Host** | `localhost` | `mailhog` |
-
-### Estructura de Configuración
-
-- `.env` - Configuración activa actual (se cambia automáticamente)
-- `.env.local.example` - Template para desarrollo local 
-- `.env.docker.example` - Template para Docker
-- `switch-env.sh` - Script para cambiar entre configuraciones
-
-**Primera vez:**
-```bash
-# El script docker-helper.sh creará automáticamente los archivos .env necesarios
-./docker-helper.sh setup
-
-# O manualmente:
-cp .env.local.example .env.local    # Editar rutas si es necesario
-cp .env.docker.example .env.docker  # Listo para Docker
-php artisan key:generate            # Generar APP_KEY
-```
-
-## Comandos Útiles
-
-### Laravel Artisan
-```bash
-# Migraciones
-php artisan migrate
-php artisan migrate:fresh --seed
-
-# Cache
-php artisan cache:clear
-php artisan config:clear
-
-# Tests
-php artisan test
-```
-
-### Con Docker (usando Sail)
-```bash
-# Comandos Artisan
-./vendor/bin/sail artisan migrate
-
-# NPM
-./vendor/bin/sail npm install
-./vendor/bin/sail npm run dev
-
-# Tests
-./vendor/bin/sail test
-```
-
-### Compilar Assets
-```bash
-# Desarrollo
-npm run dev
-
-# Producción  
-npm run build
-
-# Watch mode
-npm run watch
-```
-
-## Troubleshooting
-
-### Problema con permisos de SQLite
-```bash
-# Asegurar permisos correctos
-chmod 664 database/database.sqlite
-chmod 775 database/
-```
-
-### Limpiar todo y empezar de nuevo
-```bash
-make clean
-php artisan migrate:fresh
-npm run build
-```
-
-### Docker no inicia
-Asegúrate de que Docker Desktop esté ejecutándose:
-```bash
-# Verificar Docker
-docker --version
-docker-compose --version
-
-# Reconstruir contenedores
-make docker-build
-```
-
-## Desarrollo
-
-1. **Instalar Livewire**: El siguiente paso es instalar Livewire para la interactividad
-2. **Crear modelos**: Task, TaskStatus, etc.
-3. **Implementar autenticación**: Laravel Breeze o similar
-4. **Crear componentes Livewire**: Para el tablero Kanban
-5. **Styling**: TailwindCSS para el diseño
-
----
-
-¿Problemas? Revisa los logs:
-- Local: `storage/logs/laravel.log`
-- Docker: `./vendor/bin/sail logs`

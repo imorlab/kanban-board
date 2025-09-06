@@ -17,6 +17,16 @@ services:
             XDEBUG_MODE: '${SAIL_XDEBUG_MODE:-off}'
             XDEBUG_CONFIG: '${SAIL_XDEBUG_CONFIG:-client_host=host.docker.internal}'
             IGNITION_LOCAL_SITES_PATH: '${PWD}'
+            # Database variables
+            DB_CONNECTION: '${DB_CONNECTION:-sqlite}'
+            DB_DATABASE: '${DB_DATABASE}'
+            DB_FOREIGN_KEYS: '${DB_FOREIGN_KEYS:-true}'
+            # App variables
+            APP_NAME: '${APP_NAME}'
+            APP_ENV: '${APP_ENV:-local}'
+            APP_KEY: '${APP_KEY}'
+            APP_DEBUG: '${APP_DEBUG:-true}'
+            APP_URL: '${APP_URL}'
         volumes:
             - '.:/var/www/html'
         networks:

@@ -38,7 +38,7 @@ start_sail() {
     fi
 
     ./vendor/bin/sail up -d
-    echo -e "${GREEN}✅ Aplicación disponible en http://localhost${NC}"
+    echo -e "${GREEN}✅ Aplicación disponible en http://localhost:8080${NC}"
 }
 
 stop_sail() {
@@ -50,7 +50,7 @@ stop_sail() {
 start_production() {
     echo -e "${GREEN}🏭 Iniciando Docker Producción...${NC}"
     docker-compose -f docker-compose.prod.yml up -d --build
-    echo -e "${GREEN}✅ Aplicación disponible en http://localhost${NC}"
+    echo -e "${GREEN}✅ Aplicación disponible en http://localhost:8080${NC}"
 }
 
 stop_production() {
@@ -69,6 +69,114 @@ show_logs() {
         docker-compose -f docker-compose.prod.yml logs -f
     else
         ./vendor/bin/sail logs -f
+    fi
+}
+
+switch_to_local() {
+    echo -e "${GREEN}🏠 Cambiando a configuración LOCAL...${NC}"
+
+    # Detener contenedores de Docker si están corriendo
+    if ./vendor/bin/sail ps 2>/dev/null | grep -q "Up"; then
+        echo "⚠️  Deteniendo contenedores de Docker..."
+        ./vendor/bin/sail down
+    fi
+
+    # Restaurar .env.local si existe el backup
+    if [ -f .env.local.backup ]; then
+        cp .env.local.backup .env.local
+        echo "✅ Archivo .env.local restaurado desde backup"
+    fi
+
+    # Crear .env.local si no existe
+    if [ ! -f .env.local ] && [ -f .env.local.example ]; then
+        cp .env.local.example .env.local
+        # Actualizar ruta de base de datos con la ruta real
+        sed -i.bak "s|/absolute/path/to/your/project|$(pwd)|g" .env.local
+        rm .env.local.bak
+        echo "✅ Archivo .env.local creado desde template"
+    fi
+
+    # Aplicar configuración local
+    if [ -f .env.local ]; then
+        cp .env.local .env
+        echo "✅ Configuración LOCAL aplicada"
+
+        # Limpiar caché
+        if command -v php >/dev/null 2>&1; then
+            php artisan config:clear 2>/dev/null || true
+            php artisan cache:clear 2>/dev/null || true
+            echo "✅ Caché limpiada"
+        fi
+
+        echo -e "${GREEN}🎉 Configuración LOCAL activada${NC}"
+        echo -e "${BLUE}📝 Puedes usar 'php artisan serve' para desarrollo local${NC}"
+    else
+        echo -e "${RED}❌ No se encontró .env.local${NC}"
+        exit 1
+    fi
+}
+
+switch_to_docker() {
+    echo -e "${GREEN}🐳 Cambiando a configuración DOCKER...${NC}"
+
+    # Crear .env.docker si no existe
+    if [ ! -f .env.docker ] && [ -f .env.docker.example ]; then
+        cp .env.docker.example .env.docker
+        echo "✅ Archivo .env.docker creado desde template"
+    fi
+
+    # Aplicar configuración Docker
+    if [ -f .env.docker ]; then
+        cp .env.docker .env
+        echo "✅ Configuración DOCKER aplicada"
+
+        # Iniciar contenedores
+        ./vendor/bin/sail up -d
+        sleep 5
+
+        # Limpiar caché en el contenedor
+        ./vendor/bin/sail artisan config:clear
+        ./vendor/bin/sail artisan cache:clear
+        echo "✅ Caché limpiada"
+
+        echo -e "${GREEN}🎉 Configuración DOCKER activada${NC}"
+        echo -e "${BLUE}📝 Aplicación disponible en http://localhost:8080${NC}"
+    else
+        echo -e "${RED}❌ No se encontró .env.docker${NC}"
+        exit 1
+    fi
+}
+
+show_current_config() {
+    echo -e "${BLUE}📋 Configuración actual:${NC}"
+
+    if [ -f .env ]; then
+        DB_DATABASE=$(grep "^DB_DATABASE=" .env | cut -d'=' -f2)
+        APP_URL=$(grep "^APP_URL=" .env | cut -d'=' -f2)
+
+        if [[ "$DB_DATABASE" == *"/var/www/html/"* ]]; then
+            echo -e "${GREEN}🐳 Modo: DOCKER${NC}"
+            echo "   Base de datos: $DB_DATABASE"
+            echo "   URL: $APP_URL"
+
+            if ./vendor/bin/sail ps 2>/dev/null | grep -q "Up"; then
+                echo -e "   Estado: ${GREEN}✅ Contenedores corriendo${NC}"
+            else
+                echo -e "   Estado: ${YELLOW}⚠️  Contenedores detenidos${NC}"
+            fi
+        else
+            echo -e "${GREEN}🏠 Modo: LOCAL${NC}"
+            echo "   Base de datos: $DB_DATABASE"
+            echo "   URL: $APP_URL"
+
+            if pgrep -f "php artisan serve" > /dev/null; then
+                echo -e "   Estado: ${GREEN}✅ Servidor local corriendo${NC}"
+            else
+                echo -e "   Estado: ${YELLOW}⚠️  Servidor local detenido${NC}"
+            fi
+        fi
+    else
+        echo -e "${RED}❌ No se encontró archivo .env${NC}"
     fi
 }
 
@@ -152,6 +260,11 @@ migrate_database() {
 show_help() {
     echo -e "${BLUE}📖 Comandos disponibles:${NC}"
     echo ""
+    echo -e "${GREEN}Cambio de entorno:${NC}"
+    echo "  ./docker-helper.sh local      - Cambiar a configuración LOCAL"
+    echo "  ./docker-helper.sh docker     - Cambiar a configuración DOCKER"
+    echo "  ./docker-helper.sh config     - Mostrar configuración actual"
+    echo ""
     echo -e "${GREEN}Desarrollo (Laravel Sail):${NC}"
     echo "  ./docker-helper.sh start      - Iniciar contenedores"
     echo "  ./docker-helper.sh stop       - Detener contenedores"
@@ -171,6 +284,15 @@ show_help() {
 
 # Main
 case "$1" in
+    "local")
+        switch_to_local
+        ;;
+    "docker")
+        switch_to_docker
+        ;;
+    "config")
+        show_current_config
+        ;;
     "start")
         if [ "$2" == "prod" ]; then
             start_production

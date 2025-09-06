@@ -19,24 +19,24 @@ echo "=================================="
 # Funciones
 start_sail() {
     echo -e "${GREEN}🚀 Iniciando Laravel Sail...${NC}"
-    
+
     # Configurar automáticamente para Docker
     if [ -f .env.docker.example ] && [ ! -f .env.docker ]; then
         cp .env.docker.example .env.docker
         echo "✅ Archivo .env.docker creado desde template"
     fi
-    
+
     if [ -f .env.docker ]; then
         cp .env.docker .env
         echo "✅ Configuración Docker aplicada"
-        
+
         # Generar APP_KEY si no existe
         if ! grep -q "APP_KEY=base64:" .env; then
             php artisan key:generate
             echo "✅ APP_KEY generada"
         fi
     fi
-    
+
     ./vendor/bin/sail up -d
     echo -e "${GREEN}✅ Aplicación disponible en http://localhost${NC}"
 }
@@ -83,7 +83,7 @@ setup_environment() {
         rm .env.local.bak
         echo "✅ Archivo .env.local creado desde template"
     fi
-    
+
     if [ ! -f .env.docker ] && [ -f .env.docker.example ]; then
         cp .env.docker.example .env.docker
         echo "✅ Archivo .env.docker creado desde template"

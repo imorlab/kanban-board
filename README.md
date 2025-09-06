@@ -510,20 +510,43 @@ Puedes cambiar entre local y Docker en cualquier momento:
 
 ```bash
 # Cambiar a local
-./switch-env.sh local
+cp .env.local .env  # (crea desde .env.local.example si no existe)
 php artisan serve
 
-# Cambiar a Docker
-./switch-env.sh docker
+# Cambiar a Docker  
+cp .env.docker .env  # (crea desde .env.docker.example si no existe)
 ./vendor/bin/sail up -d
 ```
 
-## Estructura de Configuración
+## ⚠️ Configuraciones de Entorno Necesarias
 
-- `.env` - Configuración activa actual
-- `.env.local` - Configuración para desarrollo local  
-- `.env.docker` - Configuración para Docker
+**¿Por qué necesitamos archivos .env separados?**
+
+La aplicación **requiere configuraciones diferentes** para funcionar correctamente:
+
+| Configuración | Local | Docker |
+|---------------|-------|--------|
+| **Base de datos** | `/absolute/path/database/database.sqlite` | `/var/www/html/database/database.sqlite` |
+| **Redis Host** | `127.0.0.1` | `redis` |
+| **Mail Host** | `localhost` | `mailhog` |
+
+### Estructura de Configuración
+
+- `.env` - Configuración activa actual (se cambia automáticamente)
+- `.env.local.example` - Template para desarrollo local 
+- `.env.docker.example` - Template para Docker
 - `switch-env.sh` - Script para cambiar entre configuraciones
+
+**Primera vez:**
+```bash
+# El script docker-helper.sh creará automáticamente los archivos .env necesarios
+./docker-helper.sh setup
+
+# O manualmente:
+cp .env.local.example .env.local    # Editar rutas si es necesario
+cp .env.docker.example .env.docker  # Listo para Docker
+php artisan key:generate            # Generar APP_KEY
+```
 
 ## Comandos Útiles
 

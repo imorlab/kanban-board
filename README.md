@@ -511,16 +511,6 @@ php artisan test --group=user-permissions
 - [x] **Sistema de comandos** - Makefile con comandos útiles para desarrollo
 - [x] **Documentación completa** - README detallado con ejemplos y troubleshooting
 
-### 🎯 Funcionalidades Avanzadas Futuras
-- [ ] **API REST** para integraciones móviles
-- [ ] **Websockets** para colaboración en tiempo real
-- [ ] **Filtros avanzados** en el tablero
-- [ ] **Sistema de etiquetas** y categorías
-- [ ] **Fechas de vencimiento** con recordatorios
-- [ ] **Múltiples tableros** por usuario
-- [ ] **Colaboración** entre usuarios
-- [ ] **Exportar datos** a PDF/Excel
-
 ## 📄 Licencia
 
 Este proyecto está disponible bajo la licencia MIT.
